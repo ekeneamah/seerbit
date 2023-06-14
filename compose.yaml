@@ -1,21 +1,12 @@
-version: "3"
+version: '3'
+
 services:
-  invoice-app:
+  app:
+    image: seerbitmiddleware.azurecr.io/image-workflow-1686784333642
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
-    #depends_on:
-      #- database
-    #environment:
-      #- SPRING_DATASOURCE_URL=jdbc:mysql://your-database-host:3306/your-database
-      #- SPRING_DATASOURCE_USERNAME=your-username
-      #- SPRING_DATASOURCE_PASSWORD=your-password
-  #database:
-    #image: mysql:8.0
-    #environment:
-      #- MYSQL_ROOT_PASSWORD=your-root-password
-      #- MYSQL_DATABASE=your-database
-      #- MYSQL_USER=your-username
-      #- MYSQL_PASSWORD=your-password
+      - 8080:8080
+    environment:
+      - SPRING_PROFILES_ACTIVE=production

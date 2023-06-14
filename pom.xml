@@ -42,8 +42,6 @@
 			<artifactId>spring-boot-docker-compose</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>ATBB9my2ZxHyXvFUakHVyBNyctezEEDB49F5
-
-
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
