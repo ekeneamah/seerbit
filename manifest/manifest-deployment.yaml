@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seerbit-middleware-app-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: seerbit-middleware-app
+  template:
+    metadata:
+      labels:
+        app: seerbit-middleware-app
+    spec:
+      containers:
+        - name: seerbit-middleware-app
+          image: seerbitmiddleware.azurecr.io/seerbit-middlewate-image:v1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: production
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "0.5"
+            requests:
+              memory: "256Mi"
+              cpu: "0.2"
