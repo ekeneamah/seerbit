@@ -9,7 +9,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Build the application using Maven
-RUN ./mvn package -DskipTests
+RUN mvn package -DskipTests
 
 # Expose the application port
 EXPOSE 8080
