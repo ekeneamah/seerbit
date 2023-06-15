@@ -108,14 +108,50 @@ public class InvoiceController {
         return "Hello, World!";
     }
 
-    @GetMapping("/sendinvoice")
+    @PostMapping("/sendinvoice")
     public String sendinvoice(@RequestBody Invoice invoice, @RequestHeader("Authorization") String authorizationHeader) throws IOException {
         
         String bearerToken = authorizationHeader.substring("Bearer ".length());
         // Prepare the JSON payload
         String jsonPayload = convertToJson(invoice);
          // Define the command for curl
-         String curlCommand = "curl -X POST -H \"Content-Type: application/json\" -H \"Authorization: Bearer " + bearerToken + "\" -d '" + jsonPayload + "'https://seerbitapi.com/invoice/create";
+         String curlCommand = "curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer " + bearerToken + "' -d '" + jsonPayload + "' https://seerbitapi.com/invoice/create";
+
+        //String curlCommand = "curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer nucKHCCNwjdWJCE27C314G6rVrkcLG8X2Wl62VPl5r7aD3uwrtD9tgmRQ8UMFePdU2BTVCtgiHMzR/RVUEafZ76ZwECg3pQ4ZiMRzTQ++kMOM+orxmEyIS5q90DVeNoo' -d '{\"publicKey\":\"SBPUBK_POYJWLML5CVTJATRA7U8YGTMMO4LOJIF\",\"orderNo\":\"103003\",\"dueDate\":\"2023-08-07\",\"currency\":\"NGN\",\"receiversName\":\"Adatum Corporation\",\"customerEmail\":\"ekene.amah.ea@gmail.com\",\"invoiceItems\":[{\"itemName\":\"Name w\",\"quantity\":0,\"rate\":0.00,\"tax\":0},{\"itemName\":\"ATHENS Desk\",\"quantity\":3,\"rate\":649.40,\"tax\":25}]}' https://seerbitapi.com/invoice/create";
+
+        ProcessBuilder processBuilder = new ProcessBuilder("cmd", "/c", curlCommand);
+
+        Process process = processBuilder.start();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        StringBuilder response = new StringBuilder();
+
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+            response.append('\n');
+        }
+
+        int exitCode;
+        try {
+            exitCode = process.waitFor();
+        } catch (InterruptedException e) {
+            exitCode = -1;
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println("Response Code: " + exitCode);
+        System.out.println("Response Body:\n" + response.toString());
+        return response.toString();
+    }
+
+    @PostMapping("/createinvoice")
+    public String sendinvoicetakeaString(@RequestBody String invoice, @RequestHeader("Authorization") String authorizationHeader) throws IOException {
+        
+        String bearerToken = authorizationHeader.substring("Bearer ".length());
+        // Prepare the JSON payload
+         // Define the command for curl
+         String curlCommand = "curl -X POST -H \"Content-Type: application/json\" -H \"Authorization: Bearer " + bearerToken + "\" -d '" + invoice + "'https://seerbitapi.com/invoice/create";
 
         //String curlCommand = "curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer nucKHCCNwjdWJCE27C314G6rVrkcLG8X2Wl62VPl5r7aD3uwrtD9tgmRQ8UMFePdU2BTVCtgiHMzR/RVUEafZ76ZwECg3pQ4ZiMRzTQ++kMOM+orxmEyIS5q90DVeNoo' -d '{\"publicKey\":\"SBPUBK_POYJWLML5CVTJATRA7U8YGTMMO4LOJIF\",\"orderNo\":\"103003\",\"dueDate\":\"2023-08-07\",\"currency\":\"NGN\",\"receiversName\":\"Adatum Corporation\",\"customerEmail\":\"ekene.amah.ea@gmail.com\",\"invoiceItems\":[{\"itemName\":\"Name w\",\"quantity\":0,\"rate\":0.00,\"tax\":0},{\"itemName\":\"ATHENS Desk\",\"quantity\":3,\"rate\":649.40,\"tax\":25}]}' https://seerbitapi.com/invoice/create";
 
