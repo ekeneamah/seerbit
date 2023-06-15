@@ -142,7 +142,7 @@ public class InvoiceController {
 
         System.out.println("Response Code: " + exitCode);
         System.out.println("Response Body:\n" + response.toString());
-        return response.toString();
+        return response.toString()+" - "+bearerToken+" - "+jsonPayload;
     }
 
     @PostMapping("/createinvoice")
