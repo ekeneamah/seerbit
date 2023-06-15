@@ -1,5 +1,9 @@
-# Use the base image with JDK and Maven installed
+# Use the base image with JDK and Maven
 FROM adoptopenjdk:11-jdk-hotspot as builder
+
+# Install Maven
+RUN apt-get update && \
+    apt-get install -y maven
 
 # Set the working directory
 WORKDIR /app
