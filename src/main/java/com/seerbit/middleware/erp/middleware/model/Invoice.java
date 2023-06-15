@@ -5,6 +5,7 @@ import java.util.List;
 public class Invoice {
   
     private String publicKey;
+    private String token;
     private String orderNo;
     private String dueDate;
     private String currency;
@@ -12,6 +13,13 @@ public class Invoice {
     private String customerEmail;
     private List<InvoiceItems> invoiceItems;
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
     public String getPublicKey() {
         return publicKey;
     }
@@ -19,7 +27,6 @@ public class Invoice {
     public void setPublicKey(String publicKey) {
         this.publicKey = publicKey;
     }
-
     public String getOrderNo() {
         return orderNo;
     }
