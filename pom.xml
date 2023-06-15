@@ -55,6 +55,7 @@
 	</dependencies>
 
 	<build>
+	    <finalName>middleware</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.asciidoctor</groupId>
