@@ -1,5 +1,5 @@
 # Use the base image with JDK and Maven
-FROM adoptopenjdk:19-jdk-hotspot as builder
+FROM adoptopenjdk:11-jdk-hotspot as builder
 
 # Install Maven
 RUN apt-get update && \
