@@ -110,10 +110,10 @@ public class InvoiceController {
 
     @PostMapping("/sendinvoice")
     public String sendinvoice(@RequestBody Invoice invoice, @RequestHeader("Authentication") String authorizationHeader) throws IOException {
+        
         String bearerToken = authorizationHeader.substring("Bearer ".length());
         // Prepare the JSON payload
         String jsonPayload = convertToJson(invoice);
-       /*  
          // Define the command for curl
          String curlCommand = "curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer " + bearerToken + "' -d '" + jsonPayload + "' https://seerbitapi.com/invoice/create";
 
@@ -132,7 +132,7 @@ public class InvoiceController {
             response.append('\n');
         }
 
-        int exitCode; 
+        int exitCode;
         try {
             exitCode = process.waitFor();
         } catch (InterruptedException e) {
@@ -141,8 +141,8 @@ public class InvoiceController {
         }
 
         System.out.println("Response Code: " + exitCode);
-        System.out.println("Response Body:\n" + response.toString());*/
-        return " - Token "+bearerToken+" - Payload "+jsonPayload;
+        System.out.println("Response Body:\n" + response.toString());
+        return response.toString()+" - Token "+bearerToken+" - Payload "+jsonPayload;
     }
 
     @PostMapping("/createinvoice")
