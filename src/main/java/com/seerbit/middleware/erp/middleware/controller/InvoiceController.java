@@ -119,7 +119,7 @@ public class InvoiceController {
 
         //String curlCommand = "curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer nucKHCCNwjdWJCE27C314G6rVrkcLG8X2Wl62VPl5r7aD3uwrtD9tgmRQ8UMFePdU2BTVCtgiHMzR/RVUEafZ76ZwECg3pQ4ZiMRzTQ++kMOM+orxmEyIS5q90DVeNoo' -d '{\"publicKey\":\"SBPUBK_POYJWLML5CVTJATRA7U8YGTMMO4LOJIF\",\"orderNo\":\"103003\",\"dueDate\":\"2023-08-07\",\"currency\":\"NGN\",\"receiversName\":\"Adatum Corporation\",\"customerEmail\":\"ekene.amah.ea@gmail.com\",\"invoiceItems\":[{\"itemName\":\"Name w\",\"quantity\":0,\"rate\":0.00,\"tax\":0},{\"itemName\":\"ATHENS Desk\",\"quantity\":3,\"rate\":649.40,\"tax\":25}]}' https://seerbitapi.com/invoice/create";
 
-        ProcessBuilder processBuilder = new ProcessBuilder("cmd", "/c", curlCommand);
+        ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", curlCommand);
 
         Process process = processBuilder.start();
 
