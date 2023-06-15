@@ -109,7 +109,7 @@ public class InvoiceController {
     }
 
     @PostMapping("/sendinvoice")
-    public String sendinvoice(@RequestBody Invoice invoice, @RequestHeader("Authentication") String authorizationHeader) throws IOException {
+    public String sendinvoice(@RequestBody Invoice invoice, @RequestHeader("Authorization") String authorizationHeader) throws IOException {
         
         String bearerToken = authorizationHeader.substring("Bearer ".length());
         // Prepare the JSON payload
