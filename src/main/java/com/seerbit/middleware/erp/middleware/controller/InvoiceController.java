@@ -9,6 +9,7 @@ import java.net.URL;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -99,8 +100,12 @@ public class InvoiceController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "Failed to create order "+responseBuilder;
+            return "Failed to create order "+e;
         }
+    }
+    @GetMapping("/hello")
+    public String helloWorld() {
+        return "Hello, World!";
     }
     private String convertToJson(Invoice orderRequest) {
         // Implement the logic to convert OrderRequest object to JSON string
