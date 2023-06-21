@@ -232,7 +232,7 @@ public class InvoiceController {
     @PostMapping("/sendinvoice")
     public String sendinvoice(@RequestBody Invoice invoice) throws IOException {
           // Set the URL of the API server
-          String apiUrl = "https://paymentlink.seerbitapi.com/paymentlink/v2/payLinks/api";
+          String apiUrl = "https://seerbitapi.com/invoice/create";
 
           // Set the request headers
           HttpHeaders headers = new HttpHeaders();
