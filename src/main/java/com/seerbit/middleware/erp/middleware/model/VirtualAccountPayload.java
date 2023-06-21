@@ -8,11 +8,20 @@ public class VirtualAccountPayload {
     private String country;
     private String reference;
     private String email;
+    private String token;
 
     // Getters and setters for all fields
 
     public String getPublicKey() {
         return publicKey;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public void setPublicKey(String publicKey) {

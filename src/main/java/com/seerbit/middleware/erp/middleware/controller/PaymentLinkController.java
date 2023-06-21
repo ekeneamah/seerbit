@@ -35,7 +35,7 @@ import com.seerbit.middleware.erp.middleware.model.PaymentLinkRequestData;
 public class PaymentLinkController {
     @Autowired
     private RestTemplate restTemplate;
-    @PostMapping("/sendPaymentlink")
+    @PostMapping("/paymentlink")
     @ResponseBody
     public String sendPayload(@RequestBody PaymentLink payload) {
         // Set the URL of the API server
@@ -109,7 +109,7 @@ public class PaymentLinkController {
     }
 
 
-    @DeleteMapping("/deleteLink/{paymentLinkId}")
+    @DeleteMapping("/paymentlink/{paymentLinkId}")
     @ResponseBody
     public String deletePaymentLink(@RequestBody PaymentLinkRequestData requestData, @PathVariable String paymentLinkId) {
         // Set the URL

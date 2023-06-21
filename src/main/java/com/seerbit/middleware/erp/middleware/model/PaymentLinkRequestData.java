@@ -3,6 +3,7 @@ package com.seerbit.middleware.erp.middleware.model;
 public class PaymentLinkRequestData {
     private String publickey;
     private String bearertoken;
+    private String paymentReference;
 
     // Getters and setters
 
@@ -20,5 +21,9 @@ public class PaymentLinkRequestData {
 
     public void setBearertoken(String bearertoken) {
         this.bearertoken = bearertoken;
+    }
+
+    public String getPaymentreference() {
+        return paymentReference;
     }
 }

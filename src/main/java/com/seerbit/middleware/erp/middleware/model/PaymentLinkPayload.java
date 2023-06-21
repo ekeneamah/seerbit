@@ -14,6 +14,7 @@ public class PaymentLinkPayload {
     private boolean linkExpirable;
     private String expiryDate;
     private boolean oneTime;
+    private String token;
 
     public String getPaymentLinkId() {
         return paymentLinkId;
@@ -166,5 +167,9 @@ public class PaymentLinkPayload {
         public void setInvoiceNumber(boolean invoiceNumber) {
             this.invoiceNumber = invoiceNumber;
         }
+    }
+
+    public String getToken() {
+        return token;
     }
 }
