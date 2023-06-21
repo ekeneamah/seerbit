@@ -4,11 +4,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,13 +25,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seerbit.middleware.erp.middleware.model.Invoice;
 import com.seerbit.middleware.erp.middleware.model.PaymentLink;
+import com.seerbit.middleware.erp.middleware.model.PaymentLinkPayload;
+import com.seerbit.middleware.erp.middleware.model.PaymentLinkRequestData;
 
 
 
 @RestController
 @RequestMapping("/api/v1")
 public class PaymentLinkController {
-
+    @Autowired
+    private RestTemplate restTemplate;
     @PostMapping("/sendPaymentlink")
     @ResponseBody
     public String sendPayload(@RequestBody PaymentLink payload) {
@@ -51,6 +60,79 @@ public class PaymentLinkController {
         return responseEntity.getBody();
     }
 
+    @GetMapping("/paymentlink")
+    public ResponseEntity<String> getPaymentLink(@RequestBody PaymentLinkRequestData requestData) {
+        String publicKey = requestData.getPublickey();
+        String bearerToken = requestData.getBearertoken();
+
+        String url = "https://paymentlink.seerbitapi.com/paymentlink/v2/payLinks/api/" + publicKey;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(bearerToken);
+        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+
+        // You can process the response or return it as-is
+        return response;
+    }
+
+    //update payment link 
+
+    
+    @PutMapping("/paymentlink")
+    @ResponseBody
+    public String updatePaymentLink(@RequestBody PaymentLinkPayload payload) {
+        // Set the URL
+        String url = "https://paymentlink.seerbitapi.com/paymentlink/v2/payLinks/api";
+
+        // Set the headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(payload.getToken());
+
+        // Set the request entity (URL, method, headers, and payload)
+        HttpEntity<PaymentLinkPayload> requestEntity = new HttpEntity<>(payload, headers);
+
+        // Create a RestTemplate instance
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Send the PUT request
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class);
+
+        // Process the response
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return "Payment link updated successfully!";
+        } else {
+            return "Failed to update payment link.";
+        }
+    }
+
+
+    @DeleteMapping("/deleteLink/{paymentLinkId}")
+    @ResponseBody
+    public String deletePaymentLink(@RequestBody PaymentLinkRequestData requestData, @PathVariable String paymentLinkId) {
+        // Set the URL
+        String url = "https://paymentlink.seerbitapi.com/paymentlink/v2/payLinks/api/deleteLink/" + paymentLinkId;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(requestData.getBearertoken());
+
+        // Set the request entity (URL, method, headers, and payload)
+        HttpEntity<PaymentLinkPayload> requestEntity = new HttpEntity<>(headers);
+        // Create a RestTemplate instance
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Send the DELETE request
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, String.class);
+
+        // Process the response
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return "Payment link deleted successfully!";
+        } else {
+            return "Failed to delete payment link.";
+        }
+    }
 
 
 
