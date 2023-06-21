@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.seerbit.middleware.erp.middleware.model.InvResend;
 import com.seerbit.middleware.erp.middleware.model.Invoice;
 
 
@@ -108,6 +109,122 @@ public class InvoiceController {
         return "Hello, World!";
     }
 
+    @GetMapping("/resendInvoice/")
+    public String resendInvoice(@RequestBody InvResend invResend) throws IOException {
+        String curlCommand = "curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer " + invResend.getToken() + "' https://seerbitapi.com/invoice/"+invResend.getPublicKey()+"/send/"+invResend.getInvoiceno();
+
+        ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", curlCommand);
+        Process process = processBuilder.start();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        StringBuilder response = new StringBuilder();
+
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+            response.append('\n');
+        }
+
+        int exitCode;
+        try {
+            exitCode = process.waitFor();
+        } catch (InterruptedException e) {
+            exitCode = -1;
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println("Response Code: " + exitCode);
+        System.out.println("Response Body:\n" + response.toString());
+        return response.toString();
+    }
+    @GetMapping("/getInvoiceByorderno/")
+    public String getInvoiceByorderno(@RequestBody InvResend invResend) throws IOException {
+        String curlCommand = "curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer " + invResend.getToken() + "' https://seerbitapi.com/invoice/"+invResend.getPublicKey()+"/order/"+invResend.getOrderNo();
+
+        ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", curlCommand);
+        Process process = processBuilder.start();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        StringBuilder response = new StringBuilder();
+
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+            response.append('\n');
+        }
+
+        int exitCode;
+        try {
+            exitCode = process.waitFor();
+        } catch (InterruptedException e) {
+            exitCode = -1;
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println("Response Code: " + exitCode);
+        System.out.println("Response Body:\n" + response.toString());
+        return response.toString();
+    }
+
+    @GetMapping("/getInvoiceByInvoiceno/")
+    public String getInvoiceByInvoiceno(@RequestBody InvResend invResend) throws IOException {
+        String curlCommand = "curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer " + invResend.getToken() + "' https://seerbitapi.com/invoice/"+invResend.getPublicKey()+"/"+invResend.getInvoiceno();
+
+        ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", curlCommand);
+        Process process = processBuilder.start();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        StringBuilder response = new StringBuilder();
+
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+            response.append('\n');
+        }
+
+        int exitCode;
+        try {
+            exitCode = process.waitFor();
+        } catch (InterruptedException e) {
+            exitCode = -1;
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println("Response Code: " + exitCode);
+        System.out.println("Response Body:\n" + response.toString());
+        return response.toString();
+    }
+
+    @GetMapping("/getInvoiceByEmail/")
+    public String getInvoiceByEmail(@RequestBody InvResend invResend) throws IOException {
+        String curlCommand = "curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer " + invResend.getToken() + "' https://seerbitapi.com/invoice/"+invResend.getPublicKey()+"/customer/"+invResend.getCustomerEmail();
+
+        ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", curlCommand);
+        Process process = processBuilder.start();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        StringBuilder response = new StringBuilder();
+
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+            response.append('\n');
+        }
+
+        int exitCode;
+        try {
+            exitCode = process.waitFor();
+        } catch (InterruptedException e) {
+            exitCode = -1;
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println("Response Code: " + exitCode);
+        System.out.println("Response Body:\n" + response.toString());
+        return response.toString();
+    }
+
+
     @PostMapping("/sendinvoice")
     public String sendinvoice(@RequestBody Invoice invoice) throws IOException {
         
@@ -142,7 +259,7 @@ public class InvoiceController {
 
         System.out.println("Response Code: " + exitCode);
         System.out.println("Response Body:\n" + response.toString());
-        return response.toString()+" - Token "+invoice.getToken()+" - Payload "+jsonPayload;
+        return response.toString();
     }
 
     @PostMapping("/createinvoice")
