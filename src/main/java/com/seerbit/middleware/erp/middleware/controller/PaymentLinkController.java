@@ -33,8 +33,7 @@ import com.seerbit.middleware.erp.middleware.model.PaymentLinkRequestData;
 @RestController
 @RequestMapping("/api/v1")
 public class PaymentLinkController {
-    @Autowired
-    private RestTemplate restTemplate;
+    
     @PostMapping("/paymentlink")
     @ResponseBody
     public String sendPayload(@RequestBody PaymentLink payload) {
@@ -71,6 +70,7 @@ public class PaymentLinkController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(bearerToken);
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
 
         // You can process the response or return it as-is
