@@ -21,7 +21,7 @@ import com.seerbit.middleware.erp.middleware.model.VirtualAccountPayload;
 @RestController
 @RequestMapping("/api/v1")
 public class VirtualAccountController {
-    @PostMapping("/virtualAccount")
+    @PostMapping("/virtualAccount/create")
     @ResponseBody
     public String createVirtualAccount(@RequestBody VirtualAccountPayload payload) {
         // Set the URL
@@ -46,7 +46,7 @@ public class VirtualAccountController {
     }
 
 
-    @GetMapping("/virtualAccount")
+    @PostMapping("/virtualAccount/byreferenceno")
     @ResponseBody
     public String getVirtualAccount(@RequestBody PaymentLinkRequestData payload) {
         // Set the URL
@@ -70,7 +70,7 @@ public class VirtualAccountController {
         return responseEntity.getBody();
     }
 
-    @DeleteMapping("/virtualAccount")
+    @PostMapping("/virtualAccount/delete")
     @ResponseBody
     public String deleteVirtualAccount(@RequestBody PaymentLinkRequestData payload) {
         // Set the URL

@@ -27,7 +27,7 @@ import com.seerbit.middleware.erp.middleware.model.Invoice;
 @RequestMapping("/api/v1")
 public class InvoiceController {
 
-    @PostMapping("/invoices")
+    @PostMapping("/invoices/create")
     public ResponseEntity<String>  createInvoice(@RequestBody Invoice invoice, @RequestHeader("Authorization") String authorizationHeader) {
         // Perform any necessary business logic here
         String bearerToken = authorizationHeader.substring("Bearer ".length());
@@ -109,7 +109,7 @@ public class InvoiceController {
         return "Hello, World!";
     }
 
-    @GetMapping("/resendInvoice/")
+    @PostMapping("/resendInvoice/")
     public String resendInvoice(@RequestBody InvResend invResend) throws IOException {
         String curlCommand = "curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer " + invResend.getToken() + "' https://seerbitapi.com/invoice/"+invResend.getPublicKey()+"/send/"+invResend.getInvoiceno();
 
@@ -137,7 +137,7 @@ public class InvoiceController {
         System.out.println("Response Body:\n" + response.toString());
         return response.toString();
     }
-    @GetMapping("/getInvoiceByorderno/")
+    @PostMapping("/getInvoiceByorderno/")
     public String getInvoiceByorderno(@RequestBody InvResend invResend) throws IOException {
         String curlCommand = "curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer " + invResend.getToken() + "' https://seerbitapi.com/invoice/"+invResend.getPublicKey()+"/order/"+invResend.getOrderNo();
 
@@ -166,7 +166,7 @@ public class InvoiceController {
         return response.toString();
     }
 
-    @GetMapping("/getInvoiceByInvoiceno/")
+    @PostMapping("/getInvoiceByInvoiceno/")
     public String getInvoiceByInvoiceno(@RequestBody InvResend invResend) throws IOException {
         String curlCommand = "curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer " + invResend.getToken() + "' https://seerbitapi.com/invoice/"+invResend.getPublicKey()+"/"+invResend.getInvoiceno();
 
@@ -195,7 +195,7 @@ public class InvoiceController {
         return response.toString();
     }
 
-    @GetMapping("/getInvoiceByEmail/")
+    @PostMapping("/getInvoiceByEmail/")
     public String getInvoiceByEmail(@RequestBody InvResend invResend) throws IOException {
         String curlCommand = "curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer " + invResend.getToken() + "' https://seerbitapi.com/invoice/"+invResend.getPublicKey()+"/customer/"+invResend.getCustomerEmail();
 
@@ -225,7 +225,7 @@ public class InvoiceController {
     }
 
 
-    @PostMapping("/sendinvoice")
+    @PostMapping("/sendinvoice/")
     public String sendinvoice(@RequestBody Invoice invoice) throws IOException {
         
         //String bearerToken = authorizationHeader.substring("Bearer ".length());

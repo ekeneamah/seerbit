@@ -34,7 +34,7 @@ import com.seerbit.middleware.erp.middleware.model.PaymentLinkRequestData;
 @RequestMapping("/api/v1")
 public class PaymentLinkController {
     
-    @PostMapping("/paymentlink")
+    @PostMapping("/paymentlink/get")
     @ResponseBody
     public String sendPayload(@RequestBody PaymentLink payload) {
         // Set the URL of the API server
@@ -59,12 +59,31 @@ public class PaymentLinkController {
         return responseEntity.getBody();
     }
 
-    @GetMapping("/paymentlink")
+    @PostMapping("/paymentlink")
     public ResponseEntity<String> getPaymentLink(@RequestBody PaymentLinkRequestData requestData) {
         String publicKey = requestData.getPublickey();
         String bearerToken = requestData.getBearertoken();
-
+//https://paymentlink.seerbitapi.com/paymentlink/v2/payLinks/paymentLinkId/77439439
         String url = "https://paymentlink.seerbitapi.com/paymentlink/v2/payLinks/api/" + publicKey;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(bearerToken);
+        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+
+        // You can process the response or return it as-is
+        return response;
+    }
+
+    @PostMapping("/paymentlink/byreferenceno")
+    public ResponseEntity<String> getPaymentLinkbyRefid(@RequestBody PaymentLinkRequestData requestData) {
+        String publicKey = requestData.getPublickey();
+        String bearerToken = requestData.getBearertoken();
+        String reference = requestData.getPaymentreference();
+//https://paymentlink.seerbitapi.com/paymentlink/v2/payLinks/paymentLinkId/77439439
+        String url = "https://paymentlink.seerbitapi.com/paymentlink/v2/payLinks/paymentLinkId/" + reference;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -80,7 +99,7 @@ public class PaymentLinkController {
     //update payment link 
 
     
-    @PutMapping("/paymentlink")
+    @PostMapping("/paymentlink/update")
     @ResponseBody
     public String updatePaymentLink(@RequestBody PaymentLinkPayload payload) {
         // Set the URL
@@ -109,7 +128,7 @@ public class PaymentLinkController {
     }
 
 
-    @DeleteMapping("/paymentlink/{paymentLinkId}")
+    @PostMapping("/paymentlink/delete/{paymentLinkId}")
     @ResponseBody
     public String deletePaymentLink(@RequestBody PaymentLinkRequestData requestData, @PathVariable String paymentLinkId) {
         // Set the URL
