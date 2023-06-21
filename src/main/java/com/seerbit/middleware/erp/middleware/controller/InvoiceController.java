@@ -7,7 +7,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -227,39 +231,27 @@ public class InvoiceController {
 
     @PostMapping("/sendinvoice")
     public String sendinvoice(@RequestBody Invoice invoice) throws IOException {
-        
-        //String bearerToken = authorizationHeader.substring("Bearer ".length());
-        // Prepare the JSON payload
-        String jsonPayload = convertToJson(invoice);
-         // Define the command for curl
-         String curlCommand = "curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer " + invoice.getToken() + "' -d '" + jsonPayload + "' https://seerbitapi.com/invoice/create";
+          // Set the URL of the API server
+          String apiUrl = "https://paymentlink.seerbitapi.com/paymentlink/v2/payLinks/api";
 
-        //String curlCommand = "curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer nucKHCCNwjdWJCE27C314G6rVrkcLG8X2Wl62VPl5r7aD3uwrtD9tgmRQ8UMFePdU2BTVCtgiHMzR/RVUEafZ76ZwECg3pQ4ZiMRzTQ++kMOM+orxmEyIS5q90DVeNoo' -d '{\"publicKey\":\"SBPUBK_POYJWLML5CVTJATRA7U8YGTMMO4LOJIF\",\"orderNo\":\"103003\",\"dueDate\":\"2023-08-07\",\"currency\":\"NGN\",\"receiversName\":\"Adatum Corporation\",\"customerEmail\":\"ekene.amah.ea@gmail.com\",\"invoiceItems\":[{\"itemName\":\"Name w\",\"quantity\":0,\"rate\":0.00,\"tax\":0},{\"itemName\":\"ATHENS Desk\",\"quantity\":3,\"rate\":649.40,\"tax\":25}]}' https://seerbitapi.com/invoice/create";
-
-        ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", curlCommand);
-
-        Process process = processBuilder.start();
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line;
-        StringBuilder response = new StringBuilder();
-
-        while ((line = reader.readLine()) != null) {
-            response.append(line);
-            response.append('\n');
-        }
-
-        int exitCode;
-        try {
-            exitCode = process.waitFor();
-        } catch (InterruptedException e) {
-            exitCode = -1;
-            Thread.currentThread().interrupt();
-        }
-
-        System.out.println("Response Code: " + exitCode);
-        System.out.println("Response Body:\n" + response.toString());
-        return response.toString();
+          // Set the request headers
+          HttpHeaders headers = new HttpHeaders();
+          headers.setContentType(MediaType.APPLICATION_JSON);
+          String t = invoice.getToken();
+          headers.setBearerAuth(t);
+  
+          // Create the HTTP entity with the payload and headers
+          HttpEntity<Invoice> requestEntity = new HttpEntity<>(invoice, headers);
+  
+          // Create a RestTemplate instance
+          RestTemplate restTemplate = new RestTemplate();
+  
+          // Send the payload to the API server
+          ResponseEntity<String> responseEntity = restTemplate.postForEntity(apiUrl, requestEntity, String.class);
+  
+          // Return the response body
+          return responseEntity.getBody(); 
+       
     }
 
     @PostMapping("/createinvoice")
