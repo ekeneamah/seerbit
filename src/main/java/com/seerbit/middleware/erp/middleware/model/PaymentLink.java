@@ -33,6 +33,7 @@ public class PaymentLink {
     private String customizationName;
     
     private String email;
+    private Float amount;
     
    
     private RequiredFields requiredFields;
@@ -45,6 +46,14 @@ public class PaymentLink {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getAmount() {
+        return String.format("%.2f", amount);
+    }
+
+    public void setAmount(Float amount) {
+        this.amount = amount;
     }
 
     public String getToken() {
@@ -164,7 +173,7 @@ public class PaymentLink {
     // Inner class for RequiredFields
     public static class RequiredFields {
         private boolean address;
-        private int amount;
+        private Boolean amount;
         
         private boolean customerName;
         
@@ -173,7 +182,35 @@ public class PaymentLink {
         private boolean invoiceNumber;
 
         // Getters and setters for each field
+                    // Getter for customerName
+                    public boolean isCustomerName() {
+                        return customerName;
+                    }
 
+                    // Setter for customerName
+                    public void setCustomerName(Boolean customerName) {
+                        this.customerName = customerName;
+                    }
+
+                    // Getter for mobileNumber
+                    public boolean isMobileNumber() {
+                        return mobileNumber;
+                    }
+
+                    // Setter for mobileNumber
+                    public void setMobileNumber(boolean mobileNumber) {
+                        this.mobileNumber = mobileNumber;
+                    }
+
+                    // Getter for invoiceNumber
+                    public boolean isInvoiceNumber() {
+                        return invoiceNumber;
+                    }
+
+                    // Setter for invoiceNumber
+                    public void setInvoiceNumber(boolean invoiceNumber) {
+                        this.invoiceNumber = invoiceNumber;
+                    }
         public boolean isAddress() {
             return address;
         }
@@ -182,11 +219,11 @@ public class PaymentLink {
             this.address = address;
         }
 
-        public int getAmount() {
+        public boolean isAmount() {
             return amount;
         }
 
-        public void setAmount(int amount) {
+        public void setAmount(Boolean amount) {
             this.amount = amount;
         }
 
