@@ -28,8 +28,8 @@ public class FirestorePOSTransactionRepository implements POSTransactionReposito
     }
 
     @Override
-    public POSTransaction findById(String id) {
-        DocumentReference docRef = firestore.collection("transactions").document("postransactions").collection("your_posid_value-2").document(id);
+    public POSTransaction findById(String id,String posid) {
+        DocumentReference docRef = firestore.collection("transactions").document("postransactions").collection(posid).document(id);
         DocumentSnapshot snapshot;
         try {
             snapshot = docRef.get().get();

@@ -4,9 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
@@ -17,14 +19,18 @@ import com.seerbit.services.UserService;
 
 @SpringBootApplication
 public class MiddlewareApplication {
-
+private final Environment environment;
 	public static void main(String[] args) {
 		SpringApplication.run(MiddlewareApplication.class, args);
 	}
-
+ @Autowired
+    public MiddlewareApplication(Environment environment) {
+        this.environment = environment;
+    }
 	@Bean
     public Firestore firestore() throws IOException {
-        InputStream serviceAccount = getClass().getResourceAsStream("/serviceAccountKey.json");
+         String serviceAccountPath = environment.getProperty("spring.FIRESTORE_SERVICE_ACCOUNT_PATH");
+        InputStream serviceAccount = getClass().getResourceAsStream("/"+serviceAccountPath);
     FirestoreOptions firestoreOptions = FirestoreOptions.newBuilder()
             .setCredentials(GoogleCredentials.fromStream(serviceAccount))
             .setProjectId("seerbitpos")

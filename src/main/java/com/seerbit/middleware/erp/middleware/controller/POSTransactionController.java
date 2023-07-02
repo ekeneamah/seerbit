@@ -1,13 +1,21 @@
 package com.seerbit.middleware.erp.middleware.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import com.google.api.client.json.Json;
 import com.seerbit.middleware.erp.middleware.model.FirestorePOSTransactionRepository;
+import com.seerbit.middleware.erp.middleware.model.POSRefData;
 import com.seerbit.middleware.erp.middleware.model.POSTransaction;
 import com.seerbit.middleware.erp.middleware.model.POSTransactionRepository;
+import com.seerbit.middleware.erp.middleware.model.PaymentLinkRequestData;
 import com.seerbit.services.UserService;
 
 import java.util.List;
@@ -27,17 +35,37 @@ public class POSTransactionController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<POSTransaction> createposTransaction(@RequestBody POSTransaction user) {
-        POSTransaction createdUser = posTransactionRepository.save(user);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    public ResponseEntity<POSTransaction> createposTransaction(@RequestBody POSTransaction tr) {
+        POSTransaction createdPOSTransaction = posTransactionRepository.save(tr);
+        //return new ResponseEntity<>(createdPOSTransaction, HttpStatus.CREATED);
+         POSTransaction trs = posTransactionRepository.findById(createdPOSTransaction.getId(),createdPOSTransaction.getPosid());
+        if (trs != null) {
+            return new ResponseEntity<>(trs, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @GetMapping("/{id}")
+    @PostMapping("/verifytrasactionbyposid")
     @ResponseBody
-    public ResponseEntity<POSTransaction> getposTransactionById(@PathVariable String id) {
-        POSTransaction user = posTransactionRepository.findById(id);
+    public ResponseEntity<String> verifytrasactionbyposid(@RequestBody POSRefData requestData) {
+        POSTransaction user = posTransactionRepository.findById(requestData.getTransactionId(),requestData.getPosid());
         if (user != null) {
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            String publicKey = requestData.getPubkey();
+        String bearerToken = requestData.getToken();
+        String reference = requestData.getTransactionId();
+//https://paymentlink.seerbitapi.com/paymentlink/v2/payLinks/paymentLinkId/77439439
+
+        String url = "https://seerbitapi.com/api/v2/payments/query/" + user.getTransactionRef();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(bearerToken);
+        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+        
+            return response;
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
