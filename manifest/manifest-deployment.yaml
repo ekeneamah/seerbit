@@ -20,11 +20,7 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: production
-            - name: FIRESTORE_SERVICE_ACCOUNT_PATH
-              valueFrom:
-                secretKeyRef:
-                  key: serviceAccountKey.json
-                  name: spring.firestore-service-account-path  
+           
           resources:
             limits:
               memory: "512Mi"
