@@ -76,7 +76,6 @@ public class VirtualAccountController {
         // Set the URL
         String url = "https://seerbitapi.com/api/v2/virtual-accounts/"+ payload.getPaymentreference();
 
-        // Set the headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(payload.getBearertoken());
