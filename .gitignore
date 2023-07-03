@@ -12,8 +12,8 @@ target/
 .settings
 .springBeans
 .sts4-cache
-serviceAccountKey.json
-serviceAccountKey-seerbit.json
+#serviceAccountKey.json
+#serviceAccountKey-seerbit.json
 
 ### IntelliJ IDEA ###
 .idea
