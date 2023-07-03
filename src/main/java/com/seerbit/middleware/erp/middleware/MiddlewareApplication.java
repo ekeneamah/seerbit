@@ -20,6 +20,7 @@ import com.seerbit.services.UserService;
 @SpringBootApplication
 public class MiddlewareApplication {
 private final Environment environment;
+private String serviceAccountPath;
 	public static void main(String[] args) {
 		SpringApplication.run(MiddlewareApplication.class, args);
 	}
@@ -29,7 +30,10 @@ private final Environment environment;
     }
 	@Bean
     public Firestore firestore() throws IOException {
-         String serviceAccountPath = environment.getProperty("spring.FIRESTORE_SERVICE_ACCOUNT_PATH");
+        serviceAccountPath = System.getenv("FIRESTORE_SERVICE_ACCOUNT_PATH");
+        if(serviceAccountPath ==null){
+          serviceAccountPath = environment.getProperty("FIRESTORE_SERVICE_ACCOUNT_PATH");
+        }
         InputStream serviceAccount = getClass().getResourceAsStream("/"+serviceAccountPath);
     FirestoreOptions firestoreOptions = FirestoreOptions.newBuilder()
             .setCredentials(GoogleCredentials.fromStream(serviceAccount))
