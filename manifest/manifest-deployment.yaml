@@ -23,8 +23,9 @@ spec:
             - name: FIRESTORE_SERVICE_ACCOUNT_PATH
               valueFrom:
                 secretKeyRef:
-                  key: serviceAccountKey.json
-                  name: spring.firestore-service-account-path  
+                    name: spring.firestore-service-account-path  
+                    key: serviceAccountKey.json
+                  
           resources:
             limits:
               memory: "512Mi"
