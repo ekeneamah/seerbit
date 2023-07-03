@@ -42,7 +42,7 @@ public class POSTransactionController {
         if (trs != null) {
             return new ResponseEntity<>(trs, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(trs,HttpStatus.NOT_FOUND);
         }
     }
 
