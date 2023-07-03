@@ -37,13 +37,13 @@ public class POSTransactionController {
     @ResponseBody
     public ResponseEntity<POSTransaction> createposTransaction(@RequestBody POSTransaction tr) {
         POSTransaction createdPOSTransaction = posTransactionRepository.save(tr);
-        //return new ResponseEntity<>(createdPOSTransaction, HttpStatus.CREATED);
-         POSTransaction trs = posTransactionRepository.findById(createdPOSTransaction.getId(),createdPOSTransaction.getPosid());
+        return new ResponseEntity<>(createdPOSTransaction, HttpStatus.CREATED);
+       /*  POSTransaction trs = posTransactionRepository.findById(createdPOSTransaction.getId(),createdPOSTransaction.getPosid());
         if (trs != null) {
             return new ResponseEntity<>(trs, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(trs,HttpStatus.NOT_FOUND);
-        }
+        }*/
     }
 
     @PostMapping("/verifytrasactionbyposid")
