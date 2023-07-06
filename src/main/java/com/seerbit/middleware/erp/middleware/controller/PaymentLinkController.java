@@ -117,14 +117,10 @@ public class PaymentLinkController {
         RestTemplate restTemplate = new RestTemplate();
 
         // Send the PUT request
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class);
 
         // Process the response
-        if (response.getStatusCode().is2xxSuccessful()) {
-            return "Payment link updated successfully!";
-        } else {
-            return "Failed to update payment link.";
-        }
+        return responseEntity.getBody();
     }
 
 

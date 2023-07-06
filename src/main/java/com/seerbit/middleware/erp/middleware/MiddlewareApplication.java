@@ -29,10 +29,10 @@ private final Environment environment;
     }
 	@Bean
     public Firestore firestore() throws IOException {
-        InputStream serviceAccount = getClass().getResourceAsStream("/serviceAccountKey.json");
+        InputStream serviceAccount = getClass().getResourceAsStream("/serviceAccountKey-seerbit.json");
     FirestoreOptions firestoreOptions = FirestoreOptions.newBuilder()
             .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-            .setProjectId("seerbitpos")
+            .setProjectId("pospushnotif")
             .build();
     return firestoreOptions.getService();
     }

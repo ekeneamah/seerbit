@@ -10,16 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.api.client.json.Json;
-import com.seerbit.middleware.erp.middleware.model.FirestorePOSTransactionRepository;
 import com.seerbit.middleware.erp.middleware.model.POSRefData;
 import com.seerbit.middleware.erp.middleware.model.POSTransaction;
 import com.seerbit.middleware.erp.middleware.model.POSTransactionRepository;
-import com.seerbit.middleware.erp.middleware.model.PaymentLinkRequestData;
 import com.seerbit.services.UserService;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/api/v1/postransaction")

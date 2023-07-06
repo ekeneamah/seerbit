@@ -26,4 +26,7 @@ public class PaymentLinkRequestData {
     public String getPaymentreference() {
         return paymentReference;
     }
+    public void setPaymentReference(String paymentReference) {
+        this.paymentReference = paymentReference;
+    }
 }
